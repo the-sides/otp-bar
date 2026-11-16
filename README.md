@@ -10,9 +10,25 @@ A tiny macOS menu bar app (Rust, native AppKit) that turns a pasted secret key i
 
 ## Install
 
-    ./install.sh     # builds a release, installs ~/Applications/OTP Bar.app and launches it
+    ./install.sh     # builds, installs ~/Applications/OTP Bar.app, enables login startup, and launches
 
-Add it under System Settings → General → Login Items to start it at login.
+The installer registers a per-user LaunchAgent (`local.otp-bar`) that starts the
+app once when you log in. Quit stays quit until you open it again or next log in.
+Re-running the installer updates the app and its login configuration.
+
+To disable login startup:
+
+    launchctl disable "gui/$(id -u)/local.otp-bar"
+
+To enable it again:
+
+    launchctl enable "gui/$(id -u)/local.otp-bar"
+
+To stop it now:
+
+    launchctl bootout "gui/$(id -u)/local.otp-bar"
+
+The installed app can also be opened from `~/Applications/OTP Bar.app`.
 
 ## Command line
 
